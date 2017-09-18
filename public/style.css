@@ -4,10 +4,29 @@
   margin-bottom: 30px;
   font-size: 24px;
   text-align: left;
-  background-color: #3333FF;
+  background-color: #6f5499;
 }
 
 .main-header h1 {
   margin-top: 0;
   color: #fff;
+}
+.main-header h2 {
+  margin-top: 2;
+  color: #DB8B8B;
+}
+.words-pannel {
+  margin-top: 10px;
+}
+
+.avatar {
+  height: 48px;
+  width: 48px;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: middle;
+  border-radius: 10px;
+  float: left;
+  margin-right: 18px;
+  cursor: default;
 }
