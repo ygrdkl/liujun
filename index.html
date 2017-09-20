@@ -3,13 +3,13 @@
 
 <head lang="en">
   <meta charset="UTF-8">
-  <title>晚来的第7课作业</title>
+  <title>晚来的第9课作业</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
     crossorigin="anonymous">
   <link rel="stylesheet" href="./public/style.css">
   <script src="./public/vue.min.js"></script>
-  <script src="./public\index.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -17,34 +17,57 @@
     <div class="main-header">
       <div class="container">
         <h1>JavaScript编程入门</h1>
-        <h2>收集大家的开课前寄语</h2>
+        <h2>对徐帅说心里话</h2>
       </div>
     </div>
-    <div class="container">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">我的心里话</h3>
-          </div>
-          <div class="panel-body">
-            <div class="words-pannel" v-for="item in wordsList">
-              <div class="media">
-                <div class="media-left">
-                  <a href="#">
+    <div class="col-md-8">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">我的心里话</h3>
+        </div>
+        <div class="panel-body">
+          <div class="words-pannel" v-for="item in wordsList">
+            <div class="media">
+              <div class="media-left">
+                <a href="#">
                     <img class="media-object avatar" v-bind:src="item.avatar" alt="...">
                   </a>
-                </div>
-                <div class="media-body">
-                  <h4 class="media-heading">
-                    {{ item.name }}
-                  </h4>
-                    {{ item.words }}
-                </div>
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading">
+                  {{ item.name }}
+                </h4>
+                {{ item.words }}
               </div>
             </div>
           </div>
+        </div>
       </div>
     </div>
   </div>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">在这里说哦</h3>
+      </div>
+      <div class="panel-body">
+        <form>
+          <div class="user-name form-group">
+            <label for="name">你的名字：</label>
+            <input id="name" class="form-control" type="text" autofocus v-model="name" v-model.trim="name">
+          </div>
+          <div class="user-account form-group">
+            <label for="account">新大的账号：</label>
+            <input id="account" class="form-control" type="text" v-model="account" v-model.trim="account">
+          </div>
+          <div class="user-content form-group">
+            <label for="content">你想对老师说些什么？</label>
+            <textarea id="content" name="content" class="form-control" v-model="content" rows="10"></textarea>
+          </div>
+          <button class="btn btn-primary btn-lg btn-block" type="submit" v-on:click="submit">提交</button>
+        </form>
+      </div>
+    </div>
 </body>
 
 </html>
@@ -52,13 +75,37 @@
   // vue官网： https://cn.vuejs.org/v2/guide/
   // 初始化Vue
 
-  // 把收集的数据放在这里
+  var app = new Vue({
+    el: '#app',   // #app 和html中div#id的 app 对应
+    data: {
+      wordsList: []  // 变量wordsList可以在html使用
+    },
+    methods: {
+      fetchData: function () {
+        axios.get('https://js.xinshengdaxue.com/api/v1/learnJS/course/1/words')
+          .then(function (response) {
+            app.wordsList = response.data.words;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      },
+      setToMe: function (){
+        axios.post('https://js.xinshengdaxue.com/api/v1/learnJS/sayToMe', {
+    name: '', 
+    account: '', 
+    content: '' 
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+      }
+    }
+  });
 
-    new Vue({
-        el: '#app',   // #app 和html中div#id的 app 对应
-        data: {
-          wordsList: wordsList  // 变量wordsList可以在html使用
-        }
-      });
-
+  app.fetchData();
+  app.setToMe();
 </script>
