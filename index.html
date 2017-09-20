@@ -3,7 +3,7 @@
 
 <head lang="en">
   <meta charset="UTF-8">
-  <title>晚来的第9课作业</title>
+  <title>第9课作业</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
     crossorigin="anonymous">
@@ -44,30 +44,31 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="col-md-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">在这里说哦</h3>
-      </div>
-      <div class="panel-body">
-        <form>
-          <div class="user-name form-group">
-            <label for="name">你的名字：</label>
-            <input id="name" class="form-control" type="text" autofocus v-model="name" v-model.trim="name">
-          </div>
-          <div class="user-account form-group">
-            <label for="account">新大的账号：</label>
-            <input id="account" class="form-control" type="text" v-model="account" v-model.trim="account">
-          </div>
-          <div class="user-content form-group">
-            <label for="content">你想对老师说些什么？</label>
-            <textarea id="content" name="content" class="form-control" v-model="content" rows="10"></textarea>
-          </div>
-          <button class="btn btn-primary btn-lg btn-block" type="submit" v-on:click="submit">提交</button>
-        </form>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">在这里说哦</h3>
+        </div>
+        <div class="panel-body">
+          <form @submit.prevent="submit">
+            <div class="user-name form-group">
+              <label for="name">你的名字：</label>
+              <input id="name" class="form-control" type="text" autofocus v-model="name" v-model.trim="name">
+            </div>
+            <div class="user-account form-group">
+              <label for="account">新大的手机号或者邮箱：</label>
+              <input id="account" class="form-control" type="text" v-model="account" v-model.trim="account">
+            </div>
+            <div class="user-content form-group">
+              <label for="content">想对老师说些什么？</label>
+              <textarea id="content" name="content" class="form-control" v-model="content" rows="10"></textarea>
+            </div>
+            <button class="btn btn-primary btn-lg btn-block" type="submit" v-on:click="submit">提交</button>
+          </form>
+        </div>
       </div>
     </div>
+  </div>
 </body>
 
 </html>
@@ -79,9 +80,9 @@
     el: '#app',   // #app 和html中div#id的 app 对应
     data: {
       wordsList: [],
-      nameString: '',
-      accountString: '',
-      contentString: ''
+      name: '',
+      account: '',
+      content: ''
     },
     methods: {
       fetchData: function () {
@@ -93,11 +94,11 @@
             console.log(error);
           });
       },
-      sentData: function () {
+      submit: function () {
         axios.post('https://js.xinshengdaxue.com/api/v1/learnJS/sayToMe', {
-          name: app.nameString,
-          account: app.accountString,
-          content: app.contentString
+          name: app.name,
+          account: app.account,
+          content: app.content
         })
           .then(function (response) {
             var i = response.data.code;
@@ -112,7 +113,6 @@
           .catch(function (error) {
             console.log(error);
           });
-        //TODO: 对老师说点什么呢？
       }
     }
   })
