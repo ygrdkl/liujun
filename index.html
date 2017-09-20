@@ -78,7 +78,10 @@
   var app = new Vue({
     el: '#app',   // #app 和html中div#id的 app 对应
     data: {
-      wordsList: []  // 变量wordsList可以在html使用
+      wordsList: [],
+      nameString: '',
+      accountString: '',
+      contentString: ''
     },
     methods: {
       fetchData: function () {
@@ -90,22 +93,29 @@
             console.log(error);
           });
       },
-      setToMe: function (){
+      sentData: function () {
         axios.post('https://js.xinshengdaxue.com/api/v1/learnJS/sayToMe', {
-    name: '', 
-    account: '', 
-    content: '' 
-  })
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+          name: app.nameString,
+          account: app.accountString,
+          content: app.contentString
+        })
+          .then(function (response) {
+            var i = response.data.code;
+            (function () {
+              if (i === 1) {
+                alert('发送成功');
+                return
+              } alert('发送失败')
+            })();
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        //TODO: 对老师说点什么呢？
       }
     }
-  });
-
+  })
   app.fetchData();
-  app.setToMe();
+
 </script>
